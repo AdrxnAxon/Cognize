@@ -1,0 +1,41 @@
+# Build
+build/
+dist/
+.tmp/
+.cache
+# Go
+vendor/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.prof
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Chain data
+~/.axon/
+data/
+
+# Test
+coverage.out
+coverage.html
+ops
+ops_tools
+# Protobuf generated (keep committed - needed for build)
+# *.pb.go
+# *.pb.gw.go
+.local_run
+# Environment
+.env
+.env.local
+tools/agent-daemon/agent-daemon

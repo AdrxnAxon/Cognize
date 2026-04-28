@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Axon API Docs</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --bg-soft: #12182b;
+      --panel: #111729;
+      --panel-soft: #151d34;
+      --line: #26314f;
+      --line-strong: #334268;
+      --text: #edf2ff;
+      --muted: #98a4c3;
+      --accent: #91b4ff;
+      --accent-soft: rgba(145, 180, 255, 0.12);
+      --green-bg: rgba(45, 181, 119, 0.16);
+      --green-text: #86e0b6;
+      --amber-bg: rgba(255, 184, 76, 0.16);
+      --amber-text: #ffd598;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+      --radius: 16px;
+      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: linear-gradient(180deg, #0a0f1d 0%, #0b1020 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code,
+    .mono {
+      font-family: var(--mono);
+    }
+
+    .layout {
+      width: min(1380px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      padding: 20px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .sidebar p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .sidebar-group {
+      margin-top: 20px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      color: var(--text);
+    }
+
+    .sidebar a:hover {
+      text-decoration: none;
+      border-color: var(--line-strong);
+      background: var(--accent-soft);
+    }
+
+    .content {
+      display: grid;
+      gap: 20px;
+    }
+
+    .doc-header,
+    .section {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .doc-header {
+      padding: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .doc-header h2 {
+      margin: 14px 0 0;
+      font-size: 34px;
+      letter-spacing: -0.04em;
+    }
+
+    .doc-header p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .meta-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .meta-item {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-soft);
+    }
+
+    .meta-item strong,
+    .subsection-title {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .meta-item p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .section {
+      padding: 24px;
+    }
+
+    .section h3 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .section > p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .section-stack {
+      margin-top: 24px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .subsection {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .info-card,
+    .rule-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-soft);
+    }
+
+    .info-card p,
+    .rule-card p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .subsection-title {
+      margin-bottom: 2px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-soft);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    .search {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg-soft);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    .search::placeholder {
+      color: var(--muted);
+    }
+
+    .search:focus {
+      border-color: var(--line-strong);
+    }
+
+    .filter-state {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .group-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .group-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-soft);
+      overflow: hidden;
+    }
+
+    .group-card[hidden],
+    .endpoint-item[hidden] {
+      display: none;
+    }
+
+    .group-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .group-header h4 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .group-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .endpoint-list {
+      display: grid;
+    }
+
+    .endpoint-item {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+    }
+
+    .endpoint-item:last-child {
+      border-bottom: none;
+    }
+
+    .endpoint-top {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .method {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 64px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .method.get {
+      background: var(--green-bg);
+      color: var(--green-text);
+    }
+
+    .method.post,
+    .method.put,
+    .method.patch,
+    .method.delete {
+      background: var(--amber-bg);
+      color: var(--amber-text);
+    }
+
+    .path {
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    .endpoint-summary {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .endpoint-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--accent);
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .layout {
+        width: min(100vw - 20px, 1380px);
+        padding-top: 16px;
+        gap: 16px;
+      }
+
+      .doc-header,
+      .section,
+      .sidebar {
+        padding: 16px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-state {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h1>Axon API Docs</h1>
+      <p>Runtime-generated technical documentation for the public Axon API and generated agent routes.</p>
+
+      <div class="sidebar-group">
+        <div class="sidebar-label">Overview</div>
+        <a href="#overview">Overview</a>
+        <a href="#entrypoints">Public Entrypoints</a>
+        <a href="#local-ports">Local Node Ports</a>
+        <a href="#rules">API Rules</a>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="sidebar-label">API Surface</div>
+        <a href="#public-api">Unified Public API</a>
+        <a href="#generated-api">Generated Agent API</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section id="overview" class="doc-header">
+        <span class="eyebrow">Runtime Documentation</span>
+        <h2>Axon Unified API</h2>
+        <p id="summary"></p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <strong>Docs URL</strong>
+            <a id="docs-url" class="mono" href="#"></a>
+            <p>Primary documentation entry for the current runtime surface.</p>
+          </div>
+          <div class="meta-item">
+            <strong>OpenAPI Spec</strong>
+            <a id="openapi-url" class="mono" href="#"></a>
+            <p>Machine-readable specification generated from the running API server.</p>
+          </div>
+          <div class="meta-item">
+            <strong>Swagger UI</strong>
+            <a id="swagger-url" class="mono" href="#"></a>
+            <p>Interactive UI for the generated OpenAPI spec.</p>
+          </div>
+          <div class="meta-item">
+            <strong>Docs Data</strong>
+            <a id="docs-data-url" class="mono" href="#"></a>
+            <p>Runtime JSON payload used to render this page.</p>
+          </div>
+          <div class="meta-item">
+            <strong>Public API Base</strong>
+            <div id="public-api-base" class="mono"></div>
+            <p>Main public API entry.</p>
+          </div>
+          <div class="meta-item">
+            <strong>Agent API Base</strong>
+            <div id="agent-api-base" class="mono"></div>
+            <p>Generated agent API base path.</p>
+          </div>
+          <div class="meta-item">
+            <strong>Generated At</strong>
+            <div id="generated-at" class="mono"></div>
+            <p>Timestamp of the current docs payload.</p>
+          </div>
+          <div class="meta-item">
+            <strong>Total Endpoints</strong>
+            <div id="total-endpoints" class="mono"></div>
+            <p>Total routes currently described on this page.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="entrypoints" class="section">
+        <h3>Public Entrypoints</h3>
+        <p>Externally maintained HTTPS endpoints that expose the same node capabilities through the public service layer.</p>
+
+        <div class="section-stack">
+          <div class="subsection">
+            <div class="subsection-title">Available Services</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Entry</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="public-services"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="local-ports" class="section">
+        <h3>Local Node Ports</h3>
+        <p>Ports exposed by a locally running node. This section is for operators running the software directly.</p>
+
+        <div class="section-stack">
+          <div class="subsection">
+            <div class="subsection-title">Port Bindings</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Port</th>
+                    <th>Local Form</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="local-services"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rules" class="section">
+        <h3>API Rules</h3>
+        <p>Repository-owned public routes follow consistent wrappers and integration rules.</p>
+
+        <div class="section-stack">
+          <div class="subsection">
+            <div class="subsection-title">Request / Response Rules</div>
+            <div id="rules-list" class="card-grid"></div>
+          </div>
+          <div class="subsection">
+            <div class="subsection-title">Response Wrappers</div>
+            <div id="wrappers-list" class="card-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="public-api" class="section">
+        <h3>Unified Public API</h3>
+        <p id="manual-description"></p>
+
+        <div class="section-stack">
+          <div class="subsection">
+            <div class="subsection-title">Endpoints</div>
+            <div class="toolbar">
+              <input id="manual-search" class="search" type="search" placeholder="Filter by group, method, path, summary, query, or response">
+              <div id="manual-filter-state" class="filter-state"></div>
+            </div>
+            <div id="manual-groups" class="group-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="generated-api" class="section">
+        <h3 id="generated-title"></h3>
+        <p id="generated-description"></p>
+
+        <div class="section-stack">
+          <div class="subsection">
+            <div class="subsection-title">Endpoints</div>
+            <div class="toolbar">
+              <input id="generated-search" class="search" type="search" placeholder="Filter by group, method, path, summary, query, or response">
+              <div id="generated-filter-state" class="filter-state"></div>
+            </div>
+            <div id="generated-groups" class="group-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">Runtime documentation is rendered from embedded assets and live route metadata.</div>
+    </main>
+  </div>
+
+  <script>
+    const payload = {{ .DataJSON }};
+
+    function setLink(id, value) {
+      const node = document.getElementById(id);
+      node.textContent = value;
+      node.href = value;
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function appendRule(containerId, items) {
+      const container = document.getElementById(containerId);
+      items.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "rule-card";
+
+        const title = document.createElement("strong");
+        title.textContent = item.label;
+        card.appendChild(title);
+
+        const value = document.createElement("p");
+        value.className = "mono";
+        value.textContent = item.value;
+        card.appendChild(value);
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderPublicServices(items) {
+      const container = document.getElementById("public-services");
+      items.forEach((item) => {
+        const tr = document.createElement("tr");
+        const service = document.createElement("td");
+        service.textContent = item.name;
+        tr.appendChild(service);
+
+        const entry = document.createElement("td");
+        const link = document.createElement("a");
+        link.className = "mono";
+        link.href = item.entry;
+        link.textContent = item.entry;
+        entry.appendChild(link);
+        tr.appendChild(entry);
+
+        const notes = document.createElement("td");
+        notes.textContent = item.notes;
+        tr.appendChild(notes);
+
+        container.appendChild(tr);
+      });
+    }
+
+    function renderLocalServices(items) {
+      const tbody = document.getElementById("local-services");
+      items.forEach((item) => {
+        const tr = document.createElement("tr");
+        [item.name, item.port, item.local_form, item.notes].forEach((value, index) => {
+          const td = document.createElement("td");
+          if (index === 2) {
+            const span = document.createElement("span");
+            span.className = "mono";
+            span.textContent = value;
+            td.appendChild(span);
+          } else {
+            td.textContent = value;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function buildEndpointSearchText(group, endpoint) {
+      return [
+        group.name,
+        group.description || "",
+        endpoint.method,
+        endpoint.path,
+        endpoint.summary || "",
+        ...(Array.isArray(endpoint.query) ? endpoint.query : []),
+        ...(Array.isArray(endpoint.notes) ? endpoint.notes : []),
+        ...(Array.isArray(endpoint.response) ? endpoint.response : [])
+      ].join(" ").toLowerCase();
+    }
+
+    function renderGroups(containerId, groups) {
+      const container = document.getElementById(containerId);
+      groups.forEach((group) => {
+        const section = document.createElement("section");
+        section.className = "group-card";
+
+        const header = document.createElement("div");
+        header.className = "group-header";
+
+        const title = document.createElement("h4");
+        title.textContent = group.name;
+        header.appendChild(title);
+
+        if (group.description) {
+          const desc = document.createElement("p");
+          desc.textContent = group.description;
+          header.appendChild(desc);
+        }
+
+        section.appendChild(header);
+
+        const list = document.createElement("div");
+        list.className = "endpoint-list";
+
+        group.endpoints.forEach((endpoint) => {
+          const item = document.createElement("article");
+          item.className = "endpoint-item";
+          item.dataset.search = buildEndpointSearchText(group, endpoint);
+
+          const top = document.createElement("div");
+          top.className = "endpoint-top";
+
+          const method = document.createElement("span");
+          method.className = "method " + endpoint.method.toLowerCase();
+          method.textContent = endpoint.method;
+          top.appendChild(method);
+
+          const path = document.createElement("code");
+          path.className = "path";
+          path.textContent = endpoint.path;
+          top.appendChild(path);
+
+          item.appendChild(top);
+
+          const summary = document.createElement("div");
+          summary.className = "endpoint-summary";
+          summary.textContent = endpoint.summary;
+          item.appendChild(summary);
+
+          const meta = document.createElement("div");
+          meta.className = "endpoint-meta";
+
+          if (Array.isArray(endpoint.query)) {
+            endpoint.query.forEach((value) => {
+              const chip = document.createElement("span");
+              chip.className = "chip";
+              chip.textContent = "query: " + value;
+              meta.appendChild(chip);
+            });
+          }
+
+          if (Array.isArray(endpoint.response)) {
+            endpoint.response.forEach((value) => {
+              const chip = document.createElement("span");
+              chip.className = "chip";
+              chip.textContent = "response: " + value;
+              meta.appendChild(chip);
+            });
+          }
+
+          if (Array.isArray(endpoint.notes)) {
+            endpoint.notes.forEach((value) => {
+              const chip = document.createElement("span");
+              chip.className = "chip";
+              chip.textContent = value;
+              meta.appendChild(chip);
+            });
+          }
+
+          if (meta.childNodes.length > 0) {
+            item.appendChild(meta);
+          }
+
+          list.appendChild(item);
+        });
+
+        section.appendChild(list);
+        container.appendChild(section);
+      });
+    }
+
+    function countEndpoints(groups) {
+      return groups.reduce((sum, group) => sum + group.endpoints.length, 0);
+    }
+
+    function applyFilter(inputId, containerId, stateId) {
+      const input = document.getElementById(inputId);
+      const container = document.getElementById(containerId);
+      const state = document.getElementById(stateId);
+
+      const run = () => {
+        const query = input.value.trim().toLowerCase();
+        let visibleEndpoints = 0;
+        let visibleGroups = 0;
+
+        container.querySelectorAll(".group-card").forEach((groupCard) => {
+          let visible = false;
+
+          groupCard.querySelectorAll(".endpoint-item").forEach((endpoint) => {
+            const matched = query === "" || endpoint.dataset.search.includes(query);
+            endpoint.hidden = !matched;
+            if (matched) {
+              visible = true;
+              visibleEndpoints += 1;
+            }
+          });
+
+          groupCard.hidden = !visible;
+          if (visible) {
+            visibleGroups += 1;
+          }
+        });
+
+        state.textContent = query === ""
+          ? visibleEndpoints + " endpoints across " + visibleGroups + " groups"
+          : "Filtered to " + visibleEndpoints + " endpoints across " + visibleGroups + " groups";
+      };
+
+      input.addEventListener("input", run);
+      run();
+    }
+
+    const manualEndpoints = countEndpoints(payload.public_api.groups);
+    const generatedEndpoints = countEndpoints(payload.generated_api.groups);
+
+    setText("summary", payload.summary);
+    setText("public-api-base", payload.runtime.public_api_base);
+    setText("agent-api-base", payload.runtime.agent_api_base);
+    setText("generated-at", payload.generated_at);
+    setText("total-endpoints", String(manualEndpoints + generatedEndpoints));
+    setText("manual-description", "Base path: " + payload.public_api.base_path);
+    setText("generated-title", payload.generated_api.title);
+    setText("generated-description", "Generated routes are discovered from protobuf HTTP annotations at startup. Version: " + payload.generated_api.version);
+
+    setLink("docs-url", payload.runtime.docs_url);
+    setLink("openapi-url", payload.runtime.openapi_spec_url);
+    setLink("swagger-url", payload.runtime.swagger_ui_url);
+    setLink("docs-data-url", payload.runtime.docs_data_url);
+
+    renderPublicServices(payload.public_services);
+    renderLocalServices(payload.local_services);
+    appendRule("rules-list", payload.public_api.rules);
+    appendRule("wrappers-list", payload.public_api.response_wrappers);
+    renderGroups("manual-groups", payload.public_api.groups);
+    renderGroups("generated-groups", payload.generated_api.groups);
+
+    applyFilter("manual-search", "manual-groups", "manual-filter-state");
+    applyFilter("generated-search", "generated-groups", "generated-filter-state");
+  </script>
+</body>
+</html>
