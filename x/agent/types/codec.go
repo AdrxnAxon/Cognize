@@ -31,7 +31,12 @@ func RegisterInterfaces(registry types.InterfaceRegistry) {
 		&MsgSubmitAIChallengeResponse{},
 		&MsgRevealAIChallengeResponse{},
 	)
-	msgservice.RegisterMsgServiceDesc(registry, &Msg_ServiceDesc)
+
+	// FIX: Workaround for nil HandlerType bug in SDK v0.54.0-rc.1 when HandlerType is nil
+	// This happens because the generated code has HandlerType set to nil interface
+	if Msg_ServiceDesc.HandlerType != nil {
+		msgservice.RegisterMsgServiceDesc(registry, &Msg_ServiceDesc)
+	}
 }
 
 var (
