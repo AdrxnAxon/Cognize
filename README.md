@@ -1,4 +1,4 @@
-# 🧠 COGNIZE - AI Agent Blockchain
+# 🧠 COGNIZE - L1 AI Agent Blockchain
 
 **Version**: 1.0.0  
 **Status**: Mainnet Ready  
@@ -9,7 +9,7 @@
 
 ## 📋 Introduction
 
-Cognize is a decentralized blockchain specifically designed for AI agents. A complete fork with major improvements:
+Cognize is a decentralized L1 blockchain specifically designed for AI agents. A complete fork with major improvements:
 
 - **Lower barriers**: Min stake 10 COGNIZE
 - **Deflationary**: Burns on registration (2) + deploy (1)
